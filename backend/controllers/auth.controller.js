@@ -12,7 +12,7 @@ export const signup = async (req, res) => {
       return res.status(400).json({ error: "Invalid email format" });
     }
 
-    const existingUser = await User.findOne({ username });
+    const existingUser = await User.findOne({ username }); //username:username
     if (existingUser) {
       return res.status(400).json({ error: "Username is already taken" });
     }
@@ -33,9 +33,9 @@ export const signup = async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, salt);
 
     const newUser = new User({
-      fullname,
-      username,
-      email,
+      fullname, //fullname:fullname
+      username, //username:username
+      email, //email:email
       password: hashedPassword,
     });
 
