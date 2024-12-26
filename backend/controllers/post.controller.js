@@ -27,7 +27,7 @@ export const createPost = async (req, res) => {
       img,
     });
 
-    await newPost.save();
+    await newPost.save(); //saves to the database storage
     res.status(201).json(newPost);
   } catch (error) {
     res.status(500).json({ error: "Internal server error" });
@@ -48,12 +48,14 @@ export const deletePost = async (req, res) => {
         .json({ error: "Your are not authorized to delete this post" });
     }
 
-    if (post.img) {
+    if (post.img) { // we have to delete the image explicitely because after deleting the post, the image will remain in the database. Because when we delete a post, the url of the image related to the post gets deleted not the image itself from the database.
+      // in the cloudinary, an uploaded image secure url will look like below
+      // https://res.cloudinary.com/demo/image/upload/v1234567890/sample.jpg
       const imgId = post.img.split("/").pop().split(".")[0];
       await cloudinary.uploader.destroy(imgId);
     }
 
-    await Post.findByIdAndDelete(req.params.id);
+    await Post.findByIdAndDelete(req.params.id); // deleting the post
     res.status(200).json({ message: "Post deleted successfully" });
   } catch (error) {
     console.log("Error in deletePost controller: ", error);
