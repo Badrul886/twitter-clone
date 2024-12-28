@@ -30,7 +30,7 @@ const SignUpPage = () => {
         });
 
         const data = await res.json();
-        if(!res.ok) throw new Error(data.error || "Failed to create account");
+        if (!res.ok) throw new Error(data.error || "Failed to create account");
         console.log(data);
         return data;
       } catch (error) {
@@ -70,7 +70,6 @@ const SignUpPage = () => {
   //     toast.error(error.message);
   //   },
   // });
-
 
   const handleSubmit = (e) => {
     e.preventDefault(); // page won't reload
