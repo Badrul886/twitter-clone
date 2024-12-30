@@ -31,8 +31,8 @@ const CreatePost = () => {
         const data = await res.json();
         if (!res.ok) {
           throw new Error(data.error || "Something went wrong");
-          return data;
         }
+        return data;
       } catch (error) {
         throw new Error(error);
       }
@@ -40,8 +40,8 @@ const CreatePost = () => {
     onSuccess: () => {
       setText("");
       setImg(null);
-      toast.success("Post deleted successfully");
-      queryClient.invalidateQueries({ queryKey: ["posts"] });
+      toast.success("Post created successfully");
+      queryClient.invalidateQueries({ queryKey: ['posts'] });
     },
   });
 

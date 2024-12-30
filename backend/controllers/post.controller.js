@@ -35,6 +35,51 @@ export const createPost = async (req, res) => {
   }
 };
 
+// export const createPost = async (req, res) => {
+//   try {
+//     const { text } = req.body;
+//     let { img } = req.body;
+//     const userId = req.user?._id?.toString();
+
+//     if (!userId) return res.status(401).json({ error: "Unauthorized" });
+
+//     const user = await User.findById(userId);
+//     if (!user) return res.status(404).json({ error: "User not found" });
+
+//     if (!text && !img) {
+//       return res.status(400).json({ error: "Post must have text or image" });
+//     }
+
+//     if (img) {
+//       if (!img.startsWith("data:image/")) {
+//         return res.status(400).json({ error: "Invalid image format" });
+//       }
+
+//       try {
+//         const uploadedResponse = await cloudinary.uploader.upload(img, {
+//           folder: "posts",
+//         });
+//         img = uploadedResponse.secure_url;
+//       } catch (uploadError) {
+//         console.error("Cloudinary upload error:", uploadError);
+//         return res.status(500).json({ error: "Image upload failed" });
+//       }
+//     }
+
+//     const newPost = new Post({
+//       user: userId,
+//       text,
+//       img,
+//     });
+
+//     await newPost.save();
+//     res.status(201).json(newPost);
+//   } catch (error) {
+//     console.error("Error in createPost controller:", error);
+//     res.status(500).json({ error: error.message || "Internal server error" });
+//   }
+// };
+
 export const deletePost = async (req, res) => {
   try {
     const post = await Post.findById(req.params.id);
