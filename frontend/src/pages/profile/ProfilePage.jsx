@@ -27,7 +27,7 @@ const ProfilePage = () => {
   const { username } = useParams();
 
   const isMyProfile = true;
-  
+
   const {
     data: user,
     isLoading,
@@ -229,7 +229,7 @@ const ProfilePage = () => {
             </>
           )}
 
-          <Posts />
+          <Posts feedType={feedType} username={username} userId={user?._id} />
         </div>
       </div>
     </>
