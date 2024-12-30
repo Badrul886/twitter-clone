@@ -93,7 +93,8 @@ export const deletePost = async (req, res) => {
         .json({ error: "Your are not authorized to delete this post" });
     }
 
-    if (post.img) { // we have to delete the image explicitely because after deleting the post, the image will remain in the database. Because when we delete a post, the url of the image related to the post gets deleted not the image itself from the database.
+    if (post.img) {
+      // we have to delete the image explicitely because after deleting the post, the image will remain in the database. Because when we delete a post, the url of the image related to the post gets deleted not the image itself from the database.
       // in the cloudinary, an uploaded image secure url will look like below
       // https://res.cloudinary.com/demo/image/upload/v1234567890/sample.jpg
       const imgId = post.img.split("/").pop().split(".")[0];
@@ -151,7 +152,11 @@ export const likeUnlikePost = async (req, res) => {
       // unlike post
       await Post.updateOne({ _id: postId }, { $pull: { likes: userId } });
       await User.updateOne({ _id: userId }, { $pull: { likedPosts: postId } });
-      res.status(200).json({ message: "Post unliked successfully" });
+
+      const updatedLikes = post.likes.filter(
+        (id) => id.toString() !== userId.toString()
+      );
+      res.status(200).json(updatedLikes);
     } else {
       // Liked post
       post.likes.push(userId);
@@ -165,7 +170,8 @@ export const likeUnlikePost = async (req, res) => {
       });
       await notification.save();
 
-      res.status(200).json({ message: "Post liked successfully" });
+      const updatedLikes = post.likes;
+      res.status(200).json(updatedLikes);
     }
   } catch (error) {
     console.log("Error in likeUnlikePost controller: ", error);
