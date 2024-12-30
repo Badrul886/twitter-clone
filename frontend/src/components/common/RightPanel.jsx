@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 
 import useFollow from "../../hooks/useFollow";
 
-import RightPanelSkeleton from "./skeletons/RightPanelSkeleton";
+import RightPanelSkeleton from "../common/skeletons/RightPanelSkeleton";
 import LoadingSpinner from "./LoadingSpinner";
 
 const RightPanel = () => {
@@ -14,7 +14,7 @@ const RightPanel = () => {
         const res = await fetch("/api/users/suggested");
         const data = await res.json();
         if (!res.ok) {
-          throw new Error(data.error || "Something went wrong");
+          throw new Error(data.error || "Something went wrong!");
         }
         return data;
       } catch (error) {
@@ -23,7 +23,7 @@ const RightPanel = () => {
     },
   });
 
-  const { followUnfollow, isPending } = useFollow();
+  const { follow, isPending } = useFollow();
 
   if (suggestedUsers?.length === 0) return <div className="md:w-64 w-0"></div>;
 
@@ -68,7 +68,7 @@ const RightPanel = () => {
                     className="btn bg-white text-black hover:bg-white hover:opacity-90 rounded-full btn-sm"
                     onClick={(e) => {
                       e.preventDefault();
-                      followUnfollow(user._id);
+                      follow(user._id);
                     }}
                   >
                     {isPending ? <LoadingSpinner size="sm" /> : "Follow"}

@@ -11,10 +11,8 @@ import { FaArrowLeft } from "react-icons/fa6";
 import { IoCalendarOutline } from "react-icons/io5";
 import { FaLink } from "react-icons/fa";
 import { MdEdit } from "react-icons/md";
-// import { query } from "express";
 import { useQuery } from "@tanstack/react-query";
 import { formatMemberSinceDate } from "../../utils/date";
-// import { use } from "react";
 
 import useFollow from "../../hooks/useFollow";
 import useUpdateUserProfile from "../../hooks/useUpdateUserProfile";
@@ -30,9 +28,7 @@ const ProfilePage = () => {
   const { username } = useParams();
 
   const { followUnfollow, isPending } = useFollow();
-  const { data: authUser } = useQuery({
-    queryKey: ["authUser"],
-  });
+  const { data: authUser } = useQuery({ queryKey: ["authUser"] });
 
   const {
     data: user,
@@ -46,7 +42,7 @@ const ProfilePage = () => {
         const res = await fetch(`/api/users/profile/${username}`);
         const data = await res.json();
         if (!res.ok) {
-          throw new Error(data.message || "Something went wrong");
+          throw new Error(data.error || "Something went wrong");
         }
         return data;
       } catch (error) {
@@ -57,9 +53,10 @@ const ProfilePage = () => {
 
   const { isUpdatingProfile, updateProfile } = useUpdateUserProfile();
 
-  const isMyProfile = authUser?._id === user?._id;
+  const isMyProfile = authUser._id === user?._id;
   const memberSinceDate = formatMemberSinceDate(user?.createdAt);
   const amIFollowing = authUser?.following.includes(user?._id);
+
   const handleImgChange = (e, state) => {
     const file = e.target.files[0];
     if (file) {
@@ -195,7 +192,8 @@ const ProfilePage = () => {
                           rel="noreferrer"
                           className="text-sm text-blue-500 hover:underline"
                         >
-                          youtube.com/@asaprogrammer_
+                          {/* Updated this after recording the video. I forgot to update this while recording, sorry, thx. */}
+                          {user?.link}
                         </a>
                       </>
                     </div>
