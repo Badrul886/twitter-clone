@@ -65,6 +65,17 @@ export const getSuggestedUsers = async (req, res) => {
     // first we want to exclude the current user from the suggestedUsers array
     const userId = req.user._id;
 
+    // for performance improvement, we can use set. Ask chatGPT
+    // Without set: Time complexity: O(m*n)
+    // With set: Time complexity: O(m+n)
+
+    // const followingSet = new Set(usersFollowedByMe.following);
+
+    // const filteredUsers = users.filter(
+    //   (user) => !followingSet.has(user._id)
+    // );
+    // const suggestedUsers = filteredUsers.slice(0, 4);
+
     const usersFollowedByMe = await User.findById(userId).select("following");
 
     const users = await User.aggregate([
